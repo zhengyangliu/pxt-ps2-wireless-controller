@@ -9,8 +9,8 @@
     "files": [
         "README.md",
         "main.ts",
-        "_locales/zh/flymouse-jsdoc-strings.json",
-        "_locales/zh/flymouse-strings.json"
+        "_locales/zh/ps2_wireless_controller-jsdoc-strings.json",
+        "_locales/zh/ps2_wireless_controller-strings.json"
     ],
     "testFiles": [
         "test.ts"
