@@ -1,0 +1,8 @@
+{
+  "ps2": "A driver of PS2 wireless controller in MakeCode.\r\n@abstract This program is port from https://github.com/Lynxmotion/Arduino-PS2X, It's a lite version of Arduino-PS2X,\r\ncan only be used in communicate with 2.4G PS2 wireless controller, other ps2 gamepads are not supported. The wareform \r\ncan be referenced from https://store.curiousinventor.com/guides/PS2.\r\n@author ArthurZheng",
+  "ps2.buttonAnalog": "return ps2 controller's analog button's value.\r\n@param {AnalogButton} button - analog button name, eg: ps2.AnalogButton.RX\r\n@return {number} analog button's value, range: 0~255, idle: 128",
+  "ps2.buttonDigital": "return ps2 controller's digital button's state.\r\n@param {DigitalButton} button - digital button name, eg: ps2.DigitalButton.Select\r\n@return {boolean} digital button's state",
+  "ps2.read": "read data from ps2 controller",
+  "ps2.readGamepad": "Send and recive data. recive data is store in ps2Data and btData\r\n@param {number} byte - the data to send , eg: 0x00\r\n@return {number} 0 no error, 1 error",
+  "ps2.setPins": "Initialize ps2 controller and set pins, should run at first."
+}

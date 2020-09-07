@@ -8,7 +8,9 @@
     },
     "files": [
         "README.md",
-        "main.ts"
+        "main.ts",
+        "_locales/zh/flymouse-jsdoc-strings.json",
+        "_locales/zh/flymouse-strings.json"
     ],
     "testFiles": [
         "test.ts"
