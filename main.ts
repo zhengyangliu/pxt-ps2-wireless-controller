@@ -77,8 +77,6 @@ namespace ps2 {
      * @param {DigitalPin} cs - CS pin name, eg: DigitalPin.P16
      * @return {number} 0 no error, 1 cannot communicat with wireless recreceiver, 2 cannot set wireless receiver mode
      */
-    //% blockId=readPS2 block="Initialize ps2 controller dout %dout din %din clk %clk cs %cs"
-    //% group="PS2"
     export function initGamepad(dout: DigitalPin, din: DigitalPin, clk: DigitalPin, cs: DigitalPin): number {
 
         let temp = [0];
@@ -164,8 +162,6 @@ namespace ps2 {
      * @param {number} byte - the data to send , eg: 0x00
      * @return {number} 0 no error, 1 error
      */
-    //% blockId=readPS2 block="read data from ps2 controller"
-    //% group="PS2"
     export function readGamepad(): boolean {
 
         let temp = input.runningTime() - lastReadtime;
@@ -242,7 +238,7 @@ namespace ps2 {
      * @return {boolean} digital button's state
      */
     //% blockId=calcPS2ButtonDigital block="read digital button %button from ps2 data"
-    //% group="PS2"
+    //% weight=98
     export function buttonDigital(button: DigitalButton): boolean {
         return ((~btData & button) > 0);
     }
@@ -253,8 +249,19 @@ namespace ps2 {
      * @return {number} analog button's value, range: 0~255, idle: 128
      */
     //% blockId=calcPS2ButtonAnalog block="read analog button %button from ps2 data"
-    //% group="PS2"
+    //% weight=99
     export function buttonAnalog(button: AnalogButton): number {
         return ps2Data[button];
     }
+
+    /**
+     * Initialize ps2 controller and set pins, should run at first.
+     */
+    //% blockId=readPS2 block="Set ps2 controller pins dout %dout din %din clk %clk cs %cs"
+    //% inlineInputMode=inline
+    //% weight=100
+    export function setPins() {
+        ps2.initGamepad(DigitalPin.P15, DigitalPin.P14, DigitalPin.P13, DigitalPin.P16);
+    }
+
 }
