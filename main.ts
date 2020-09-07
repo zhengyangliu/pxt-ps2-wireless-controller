@@ -5,7 +5,6 @@
 * can be referenced from https://store.curiousinventor.com/guides/PS2.
 * @author ArthurZheng
 */
-
 namespace ps2 {
     export enum DigitalButton {
         //% block="Select"
@@ -78,7 +77,9 @@ namespace ps2 {
      * @param {DigitalPin} cs - CS pin name, eg: DigitalPin.P16
      * @return {number} 0 no error, 1 cannot communicat with wireless recreceiver, 2 cannot set wireless receiver mode
      */
-    export function initGamepad(dout: DigitalPin, din: DigitalPin, clk: DigitalPin, cs: DigitalPin) {
+    //% blockId=readPS2 block="Initialize ps2 controller dout %dout din %din clk %clk cs %cs"
+    //% group="PS2"
+    export function initGamepad(dout: DigitalPin, din: DigitalPin, clk: DigitalPin, cs: DigitalPin): number {
 
         let temp = [0];
 
@@ -94,7 +95,7 @@ namespace ps2 {
         // configure spi
         pins.spiPins(DO, DI, CLK);
         pins.spiFormat(8, 3);
-        pins.spiFrequency(250000);
+        pins.spiFrequency(500000);
 
         // new error checking. First, read gamepad a few times to see if it's talking
         readGamepad();
@@ -125,21 +126,28 @@ namespace ps2 {
     }
 
     /**
+     * table of function reverse 8-bit data
+     * reverse data by check table
+     */
+    const rbits = hex`
+    008040C020A060E0109050D030B070F0088848C828A868E8189858D838B878F8
+    048444C424A464E4149454D434B474F40C8C4CCC2CAC6CEC1C9C5CDC3CBC7CFC
+    028242C222A262E2129252D232B272F20A8A4ACA2AAA6AEA1A9A5ADA3ABA7AFA
+    068646C626A666E6169656D636B676F60E8E4ECE2EAE6EEE1E9E5EDE3EBE7EFE
+    018141C121A161E1119151D131B171F1098949C929A969E9199959D939B979F9
+    058545C525A565E5159555D535B575F50D8D4DCD2DAD6DED1D9D5DDD3DBD7DFD
+    038343C323A363E3139353D333B373F30B8B4BCB2BAB6BEB1B9B5BDB3BBB7BFB
+    078747C727A767E7179757D737B777F70F8F4FCF2FAF6FEF1F9F5FDF3FBF7FFF`
+
+    /**
      * reverse 8-bit data
      * @param {number} data - the data want to reverse.
      * @return {number} the reversed data
      * @note  The spi of ps2 is lsb, but spi of microbit is msb, and can not reconfig,
      * so we should transform the in/out data.
      */
-    function reverseBitsInChar(data: number): number {
-        let ret = 0;
-        let i;
-        for (i = 0; i < 8; i++) {
-            ret <<= 1;
-            ret |= data & 1;
-            data >>= 1;
-        }
-        return ret;
+    export function rbit(value: number): number {
+        return rbits[value] || 0x00;
     }
 
     /**
@@ -148,7 +156,7 @@ namespace ps2 {
      * @return {number} back data
      */
     function inOutData(byte: number): number {
-        return reverseBitsInChar(pins.spiWrite(reverseBitsInChar(byte)));
+        return rbit(pins.spiWrite(rbit(byte)));
     }
 
     /**
@@ -156,7 +164,9 @@ namespace ps2 {
      * @param {number} byte - the data to send , eg: 0x00
      * @return {number} 0 no error, 1 error
      */
-    export function readGamepad() {
+    //% blockId=readPS2 block="read data from ps2 controller"
+    //% group="PS2"
+    export function readGamepad(): boolean {
 
         let temp = input.runningTime() - lastReadtime;
 
@@ -183,8 +193,9 @@ namespace ps2 {
 
             // Check to see if we received valid data or not.  
             // We should be in analog mode for our data to be valid (analog == 0x7_)
-            if ((ps2Data[1] & 0xf0) == 0x70)
+            if ((ps2Data[1] & 0xf0) == 0x70) {
                 break;
+            }
 
             // If we got to here, we are not in analog mode, try to recover...
             reconfigGamepad(); // try to get back into Analog mode.
@@ -228,8 +239,10 @@ namespace ps2 {
     /**
      * return ps2 controller's digital button's state.
      * @param {DigitalButton} button - digital button name, eg: ps2.DigitalButton.Select
-     * @return {number} digital button's state
+     * @return {boolean} digital button's state
      */
+    //% blockId=calcPS2ButtonDigital block="read digital button %button from ps2 data"
+    //% group="PS2"
     export function buttonDigital(button: DigitalButton): boolean {
         return ((~btData & button) > 0);
     }
@@ -239,6 +252,8 @@ namespace ps2 {
      * @param {AnalogButton} button - analog button name, eg: ps2.AnalogButton.RX
      * @return {number} analog button's value, range: 0~255, idle: 128
      */
+    //% blockId=calcPS2ButtonAnalog block="read analog button %button from ps2 data"
+    //% group="PS2"
     export function buttonAnalog(button: AnalogButton): number {
         return ps2Data[button];
     }
