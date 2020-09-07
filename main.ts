@@ -77,7 +77,7 @@ namespace ps2 {
      * @param {DigitalPin} cs - CS pin name, eg: DigitalPin.P16
      * @return {number} 0 no error, 1 cannot communicat with wireless recreceiver, 2 cannot set wireless receiver mode
      */
-    export function initGamepad(dout: DigitalPin, din: DigitalPin, clk: DigitalPin, cs: DigitalPin): number {
+    function initGamepad(dout: DigitalPin, din: DigitalPin, clk: DigitalPin, cs: DigitalPin): number {
 
         let temp = [0];
 
@@ -144,7 +144,7 @@ namespace ps2 {
      * @note  The spi of ps2 is lsb, but spi of microbit is msb, and can not reconfig,
      * so we should transform the in/out data.
      */
-    export function rbit(value: number): number {
+    function rbit(value: number): number {
         return rbits[value] || 0x00;
     }
 
@@ -249,7 +249,7 @@ namespace ps2 {
      * @return {number} analog button's value, range: 0~255, idle: 128
      */
     //% blockId=calcPS2ButtonAnalog block="read analog button %button from ps2 data"
-    //% weight=99
+    //% weight=97
     export function buttonAnalog(button: AnalogButton): number {
         return ps2Data[button];
     }
@@ -257,11 +257,19 @@ namespace ps2 {
     /**
      * Initialize ps2 controller and set pins, should run at first.
      */
-    //% blockId=readPS2 block="Set ps2 controller pins dout %dout din %din clk %clk cs %cs"
+    //% blockId=setPS2Pins block="set ps2 controller pins dout %dout din %din clk %clk cs %cs"
     //% inlineInputMode=inline
     //% weight=100
-    export function setPins() {
-        ps2.initGamepad(DigitalPin.P15, DigitalPin.P14, DigitalPin.P13, DigitalPin.P16);
+    export function setPins(dout: DigitalPin, din: DigitalPin, clk: DigitalPin, cs: DigitalPin) {
+        initGamepad(dout, din, clk, cs);
+    }
+    /**
+     * read data from ps2 controller 
+     */
+    //% blockId=readPS2 block="read data from ps2 controller"
+    //% weight=99
+    export function read() {
+        readGamepad();
     }
 
 }
