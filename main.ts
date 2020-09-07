@@ -257,14 +257,14 @@ namespace ps2 {
     /**
      * Initialize ps2 controller and set pins, should run at first.
      */
-    //% blockId=setPS2Pins block="set ps2 controller pins dout %dout din %din clk %clk cs %cs"
-    //% dout.defl=DigitalPin.P15
-    //% din.defl=DigitalPin.P14
-    //% clk.defl=DigitalPin.P13
-    //% cs.defl=DigitalPin.P12
+    //% blockId=setPS2Pins block="set ps2 controller pins din %dins dout %dout cs %cs clk %clk"
+    //% din.defl=DigitalPin.P15
+    //% dout.defl=DigitalPin.P14
+    //% cs.defl=DigitalPin.P13
+    //% clk.defl=DigitalPin.P12
     //% inlineInputMode=inline
     //% weight=100
-    export function setPins(dout: DigitalPin, din: DigitalPin, clk: DigitalPin, cs: DigitalPin) {
+    export function setPins(din: DigitalPin, dout: DigitalPin, cs: DigitalPin, clk: DigitalPin) {
         initGamepad(dout, din, clk, cs);
     }
     /**

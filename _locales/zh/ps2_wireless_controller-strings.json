@@ -22,7 +22,7 @@
   "ps2.buttonAnalog|block": "由PS2数据计算模拟摇杆 %button",
   "ps2.buttonDigital|block": "由PS2数据计算数字按键 %button",
   "ps2.read|block": "读取PS2接收器数据",
-  "ps2.setPins|block": "设置PS2接收器引脚 dout %dout din %din clk %clk cs %cs",
+  "ps2.setPins|block": "设置PS2接收器引脚 din %dins dout %dout cs %cs clk %clk",
   "ps2|block": "ps2",
   "{id:category}Ps2": "Ps2"
 }
