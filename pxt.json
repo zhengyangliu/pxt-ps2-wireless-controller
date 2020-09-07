@@ -1,0 +1,17 @@
+{
+    "name": "ps2_wireless_controller",
+    "version": "0.0.1",
+    "description": "A driver for ps2 wireless controller in MakeCode",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*"
+    },
+    "files": [
+        "README.md",
+        "main.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "public": true
+}
