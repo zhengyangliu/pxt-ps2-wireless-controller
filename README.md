@@ -27,6 +27,10 @@ basic.forever(function () {
 })
 ```
 
+## Example(Block)
+
+![example1](./doc/example1.png)
+
 ## License
 
 MIT
